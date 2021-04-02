@@ -6,15 +6,30 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ContentView: View {
+    
+    @ObservedObject private var userModel = UserController()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            List(userModel.users) { user in
+                VStack(alignment: .leading) {
+                    Text(user.name).font(.title)
+                    Text(String(user.active)).font(.subheadline)
+                }
+            }.navigationBarTitle("Users")
+            .onAppear() {
+                self.userModel.getUsers()
+            }
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+
+    
     static var previews: some View {
         ContentView()
     }
